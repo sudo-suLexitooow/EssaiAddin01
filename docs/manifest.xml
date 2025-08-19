@@ -16,8 +16,9 @@
     <Host Name="Document"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://sudo-sulexitooow.github.io/taskpane.html"/>
+    <SourceLocation DefaultValue="https://www.contoso.com/taskpane.html"/>
   </DefaultSettings>
+  <bt:Url id="Taskpane.Url" DefaultValue="quelquechose"/>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
