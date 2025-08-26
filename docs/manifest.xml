@@ -18,7 +18,7 @@
   <DefaultSettings>
     <SourceLocation DefaultValue="https://www.contoso.com/taskpane.html"/>
   </DefaultSettings>
-  <bt:Url id="Taskpane.Url" DefaultValue="quelquechose"/>
+  <bt:Url id="Taskpane.Url" DefaultValue="node replace-url.js local"/>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
