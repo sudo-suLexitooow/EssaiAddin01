@@ -1,19 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <title>Complément Word - Table des matières</title>
-  <link rel="stylesheet" href="tdm.css" />
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <script src="tdm.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Table des Matières - Word</title>
+    <link rel="stylesheet" href="tdm.css">
 </head>
 <body>
-  <h2>Gestion de la Table des matières</h2>
-  <div class="btn-group">
-    <button id="initDoc">Initialiser le document</button>
-    <button id="insertToc">Insérer TOC</button>
-    <button id="validate">Valider</button>
-  </div>
-  <div id="status"></div>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <h1>
+                <span class="icon-book">📚</span>
+                Exercice Table des Matières
+            </h1>
+            <p>Apprenez à créer une table des matières dans Word</p>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="content">
+            <!-- Section 1: Génération -->
+            <div class="action-section">
+                <h2>
+                    <span class="icon">📝</span>
+                    Étape 1: Génération du Document
+                </h2>
+                <div class="button-group">
+                    <button id="generateBtn" class="btn btn-primary">
+                        <span class="icon">📄</span>
+                        <span>Générer le document complet</span>
+                        <span id="generateLoader" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+                <div class="info-text">
+                    Crée un document de plusieurs pages avec une structure hiérarchique complète
+                </div>
+            </div>
+
+            <!-- Section 2: Aide pour la table des matières -->
+            <div class="action-section">
+                <h2>
+                    <span class="icon">💡</span>
+                    Étape 2: Aide Table des Matières
+                </h2>
+                <div class="button-group">
+                    <button id="tocBtn" class="btn btn-success">
+                        <span class="icon">❓</span>
+                        <span>Obtenir de l'aide</span>
+                        <span id="tocLoader" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+                <div class="info-text">
+                    Découvrez comment insérer manuellement une table des matières
+                </div>
+            </div>
+
+            <!-- Section 3: Validation -->
+            <div class="action-section">
+                <h2>
+                    <span class="icon">✅</span>
+                    Étape 3: Validation
+                </h2>
+                <div class="button-group">
+                    <button id="validateBtn" class="btn btn-info">
+                        <span class="icon">🔍</span>
+                        <span>Valider la table des matières</span>
+                        <span id="validateLoader" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+                <div class="info-text">
+                    Vérifie que la table des matières est correctement insérée
+                </div>
+            </div>
+
+            <!-- Boîte d'informations sur l'exercice -->
+            <div class="info-box">
+                <h3>🎯 Objectif de l'exercice</h3>
+                <ul>
+                    <li><strong>Apprendre</strong> à utiliser les fonctionnalités natives de Word</li>
+                    <li><strong>Générer</strong> un document structuré avec des styles de titres</li>
+                    <li><strong>Insérer manuellement</strong> une table des matières via l'onglet Références</li>
+                    <li><strong>Choisir</strong> un modèle avec numéros de page et liens cliquables</li>
+                    <li><strong>Valider</strong> que la table est correctement configurée</li>
+                </ul>
+            </div>
+
+            <!-- Zone de messages -->
+            <div id="statusMessage" class="status-message"></div>
+            
+            <!-- Résultats de validation -->
+            <div id="validationResults" class="validation-results" style="display: none;">
+                <h3>📊 Résultats de la validation :</h3>
+                <div id="validationContent"></div>
+            </div>
+
+            <!-- Critères de validation -->
+            <div class="validation-criteria" style="display: none;" id="validationCriteria">
+                <h3>📋 Critères de validation</h3>
+                <p>Votre table des matières doit :</p>
+                <ul>
+                    <li>✓ Être présente sous le titre "Table des matières"</li>
+                    <li>✓ Afficher les numéros de page</li>
+                    <li>✓ Utiliser un modèle automatique (liens cliquables)</li>
+                    <li>✓ Être à jour avec tous les titres du document</li>
+                </ul>
+            </div>
+
+            <!-- Détails du document -->
+            <div id="documentDetails" class="document-details" style="display: none;">
+                <h3>📊 Structure du document généré</h3>
+                <ul>
+                    <li><strong>Pages :</strong> 7 pages au total</li>
+                    <li><strong>Page 1 :</strong> Page de garde</li>
+                    <li><strong>Page 2 :</strong> Emplacement pour la table des matières</li>
+                    <li><strong>Pages 3-5 :</strong> 3 chapitres avec sections et sous-sections</li>
+                    <li><strong>Page 6 :</strong> Conclusion</li>
+                    <li><strong>Page 7 :</strong> Sources et références</li>
+                    <li><strong>Styles utilisés :</strong> Titre 1, Titre 2, Titre 3</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="footer">
+            <p><strong>Exercice Word - Table des Matières</strong></p>
+            <p>© 2025 - Formation Office Add-in</p>
+            <p class="source-note">Apprenez à utiliser les fonctionnalités natives de Word</p>
+        </div>
+    </div>
+
+    <!-- Scripts Office.js et notre JavaScript -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script src="document-content.js"></script>
+    <script src="tdm.js"></script>
+    
+    <script>
+        // Afficher les critères après génération du document
+        document.addEventListener('DOMContentLoaded', function() {
+            const originalGenerateBtn = document.getElementById('generateBtn');
+            if (originalGenerateBtn) {
+                const originalOnClick = originalGenerateBtn.onclick;
+                originalGenerateBtn.onclick = async function() {
+                    if (originalOnClick) {
+                        await originalOnClick();
+                    }
+                    // Afficher les critères de validation après génération
+                    setTimeout(() => {
+                        const criteriaDiv = document.getElementById('validationCriteria');
+                        if (criteriaDiv) {
+                            criteriaDiv.style.display = 'block';
+                        }
+                    }, 1000);
+                };
+            }
+        });
+    </script>
 </body>
 </html>
