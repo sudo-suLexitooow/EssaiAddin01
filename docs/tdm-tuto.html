@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tutoriel — Insérer une table des matières dans Word</title>
+  <style>
+    /* Palette moderne et élégante */
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --muted: #6b7280;
+      --ok: #059669;
+      --shadow: 0 8px 20px rgba(0,0,0,0.06);
+      --radius: 14px;
+    }
+
+    /* Base */
+    body {
+      font-family: 'Segoe UI', Roboto, Inter, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 32px;
+      color: #111827;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* Header */
+    header { margin-bottom: 28px; }
+    h1 {
+      font-size: 1.8rem;
+      margin: 0 0 6px;
+      background: linear-gradient(90deg, var(--accent), #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+    p.lead { margin: 0; color: var(--muted); font-size: 1rem; }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.08); }
+
+    /* Steps */
+    .steps ol { padding-left: 1.3rem; }
+    .steps li { margin-bottom: 14px; }
+    .steps strong { color: var(--accent); }
+
+    /* Checklist */
+    .checklist { display: grid; gap: 10px; }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+      border: 1px solid #bfdbfe;
+    }
+    .ok { background: #ecfdf5; border-color: #a7f3d0; color: var(--ok); }
+
+    /* Code blocks */
+    .code-block, pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 14px;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.95rem;
+    }
+
+    /* Notes */
+    .note { font-size: 0.9rem; color: var(--muted); }
+
+    /* Button */
+    .printable {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .printable:hover { background: #1d4ed8; }
+
+    /* Footer */
+    .footer {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 18px; }
+      h1 { font-size: 1.4rem; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .card { box-shadow: none; border: 1px solid #e5e7eb; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Guide pratique — Insérer une table des matières dans Word</h1>
+      <p class="lead">Procédure objective et vérifiable pour obtenir une table automatique, numérotée et cliquable.</p>
+    </header>
+
+    <section class="card">
+      <h2>Objectif</h2>
+      <p class="note">Ce document explique, étape par étape, comment : créer des styles de titres, insérer une table des matières automatique (avec numéros de page et liens cliquables) et vérifier qu'elle est à jour.</p>
+    </section>
+
+    <section class="card">
+      <h2>Critères de validation</h2>
+      <div class="checklist">
+        <div class="item ok">✓ Présence : un titre « Table des matières » suivi de la TOC</div>
+        <div class="item ok">✓ Numéros de page : toutes les entrées montrent un numéro</div>
+        <div class="item ok">✓ Modèle automatique : liens cliquables vers les titres</div>
+        <div class="item ok">✓ À jour : reflète tous les titres du document</div>
+      </div>
+    </section>
+
+    <section class="card steps">
+      <h2>Étapes (Word — version récente)</h2>
+      <ol>
+        <li><strong>Préparer les titres</strong>
+          <ul>
+            <li>Sélectionner un paragraphe qui doit apparaître dans la TOC.</li>
+            <li>Appliquer <em>Titre 1</em>, <em>Titre 2</em>… via l’onglet <strong>Accueil</strong>.</li>
+          </ul>
+        </li>
+        <li><strong>Placer le curseur</strong> sous le titre <strong>Table des matières</strong>.</li>
+        <li><strong>Insérer la table</strong> : Références → Table des matières → choisir un modèle <strong>automatique</strong>.</li>
+        <li><strong>Configurer les niveaux</strong> via <em>Insérer une table des matières…</em> si nécessaire.</li>
+        <li><strong>Mettre à jour</strong> : Références → Mettre à jour la table → <em>Toute la table</em>.</li>
+        <li><strong>Vérifier</strong> : liens cliquables + numéros corrects.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Raccourcis utiles</h2>
+      <ul>
+        <li><kbd>Ctrl</kbd> + <kbd>Entrée</kbd> : saut de page.</li>
+        <li><kbd>Ctrl</kbd> + <kbd>A</kbd> puis <kbd>F9</kbd> : mise à jour des tables.</li>
+        <li>Modifier les styles <em>TOC 1/TOC 2</em> pour personnaliser l'apparence.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Exemple rapide</h2>
+      <p class="note">Copiez-collez ce texte dans Word puis appliquez les styles de titres.</p>
+      <div class="code-block">
+        Titre principal 1
+
+        Sous-titre 1.1
+
+        Sous-titre 1.2
+
+        Titre principal 2
+
+        Sous-titre 2.1
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Checklist finale</h2>
+      <ol>
+        <li>Présence du titre « Table des matières ».</li>
+        <li>Table issue d’un modèle automatique.</li>
+        <li>Numéros de page visibles.</li>
+        <li>Liens cliquables fonctionnels.</li>
+        <li>Table mise à jour après modifications.</li>
+      </ol>
+    </section>
+
+    <section class="card no-print">
+      <h2>Impression / Export</h2>
+      <p class="note">Exporter en PDF pour conserver les numéros (et les liens si l’option est activée).</p>
+      <a class="printable" href="#" onclick="window.print();return false">Imprimer / Exporter PDF</a>
+    </section>
+
+    <footer class="footer">
+      <p>Approche : objective, simple et reproductible. Plusieurs méthodes existent selon la version de Word, mais celle-ci est universelle.</p>
+    </footer>
+  </div>
+</body>
+</html>
