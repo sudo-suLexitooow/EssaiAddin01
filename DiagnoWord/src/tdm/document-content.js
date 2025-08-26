@@ -4,7 +4,7 @@ const documentContent = {
     coverPage: {
         title: "L'Intelligence Artificielle",
         subtitle: "Une révolution technologique du XXIe siècle",
-        date: "2024"
+        date: "2025"
     },
     
     // Chapitres du document

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Document avec Table des Matières</title>
+    <title>Exercice Table des Matières - Word</title>
     <link rel="stylesheet" href="tdm.css">
 </head>
 <body>
@@ -12,9 +12,9 @@
         <div class="header">
             <h1>
                 <span class="icon-book">📚</span>
-                Générateur de Document
+                Exercice Table des Matières
             </h1>
-            <p>Créez un document structuré avec table des matières</p>
+            <p>Apprenez à créer une table des matières dans Word</p>
         </div>
 
         <!-- Contenu principal -->
@@ -33,25 +33,25 @@
                     </button>
                 </div>
                 <div class="info-text">
-                    Crée un document de plusieurs pages avec une structure hiérarchique
+                    Crée un document de plusieurs pages avec une structure hiérarchique complète
                 </div>
             </div>
 
-            <!-- Section 2: Table des matières -->
+            <!-- Section 2: Aide pour la table des matières -->
             <div class="action-section">
                 <h2>
-                    <span class="icon">📑</span>
-                    Étape 2: Table des Matières
+                    <span class="icon">💡</span>
+                    Étape 2: Aide Table des Matières
                 </h2>
                 <div class="button-group">
                     <button id="tocBtn" class="btn btn-success">
-                        <span class="icon">📋</span>
-                        <span>Insérer la table des matières</span>
+                        <span class="icon">❓</span>
+                        <span>Obtenir de l'aide</span>
                         <span id="tocLoader" class="loading" style="display: none;"></span>
                     </button>
                 </div>
                 <div class="info-text">
-                    Insère automatiquement la table sous le titre correspondant
+                    Découvrez comment insérer manuellement une table des matières
                 </div>
             </div>
 
@@ -64,23 +64,24 @@
                 <div class="button-group">
                     <button id="validateBtn" class="btn btn-info">
                         <span class="icon">🔍</span>
-                        <span>Valider le document</span>
+                        <span>Valider la table des matières</span>
                         <span id="validateLoader" class="loading" style="display: none;"></span>
                     </button>
                 </div>
                 <div class="info-text">
-                    Vérifie que tous les éléments sont correctement en place
+                    Vérifie que la table des matières est correctement insérée
                 </div>
             </div>
 
-            <!-- Boîte d'informations -->
+            <!-- Boîte d'informations sur l'exercice -->
             <div class="info-box">
-                <h3>📋 Instructions</h3>
+                <h3>🎯 Objectif de l'exercice</h3>
                 <ul>
-                    <li>Cliquez sur "Générer le document" pour créer un document structuré</li>
-                    <li>Le document contiendra une page de garde et plusieurs niveaux de titres</li>
-                    <li>Insérez ensuite la table des matières sous le titre correspondant</li>
-                    <li>Validez pour vérifier que tout est correct</li>
+                    <li><strong>Apprendre</strong> à utiliser les fonctionnalités natives de Word</li>
+                    <li><strong>Générer</strong> un document structuré avec des styles de titres</li>
+                    <li><strong>Insérer manuellement</strong> une table des matières via l'onglet Références</li>
+                    <li><strong>Choisir</strong> un modèle avec numéros de page et liens cliquables</li>
+                    <li><strong>Valider</strong> que la table est correctement configurée</li>
                 </ul>
             </div>
 
@@ -89,8 +90,20 @@
             
             <!-- Résultats de validation -->
             <div id="validationResults" class="validation-results" style="display: none;">
-                <h3>Résultats de la validation :</h3>
+                <h3>📊 Résultats de la validation :</h3>
                 <div id="validationContent"></div>
+            </div>
+
+            <!-- Critères de validation -->
+            <div class="validation-criteria" style="display: none;" id="validationCriteria">
+                <h3>📋 Critères de validation</h3>
+                <p>Votre table des matières doit :</p>
+                <ul>
+                    <li>✓ Être présente sous le titre "Table des matières"</li>
+                    <li>✓ Afficher les numéros de page</li>
+                    <li>✓ Utiliser un modèle automatique (liens cliquables)</li>
+                    <li>✓ Être à jour avec tous les titres du document</li>
+                </ul>
             </div>
 
             <!-- Détails du document -->
@@ -98,19 +111,21 @@
                 <h3>📊 Structure du document généré</h3>
                 <ul>
                     <li><strong>Pages :</strong> 7 pages au total</li>
-                    <li><strong>Chapitres :</strong> 3 chapitres principaux</li>
-                    <li><strong>Sections :</strong> 6 sections (niveau 2)</li>
-                    <li><strong>Sous-sections :</strong> 2 sous-sections (niveau 3)</li>
-                    <li><strong>Sujet :</strong> L'Intelligence Artificielle</li>
+                    <li><strong>Page 1 :</strong> Page de garde</li>
+                    <li><strong>Page 2 :</strong> Emplacement pour la table des matières</li>
+                    <li><strong>Pages 3-5 :</strong> 3 chapitres avec sections et sous-sections</li>
+                    <li><strong>Page 6 :</strong> Conclusion</li>
+                    <li><strong>Page 7 :</strong> Sources et références</li>
+                    <li><strong>Styles utilisés :</strong> Titre 1, Titre 2, Titre 3</li>
                 </ul>
             </div>
         </div>
 
         <!-- Pied de page -->
         <div class="footer">
-            <p><strong>Complément Word - Table des Matières</strong></p>
-            <p>© 2024 - Exercice de développement Office Add-in</p>
-            <p class="source-note">Source du contenu : Texte généré sur l'intelligence artificielle</p>
+            <p><strong>Exercice Word - Table des Matières</strong></p>
+            <p>© 2025 - Formation Office Add-in</p>
+            <p class="source-note">Apprenez à utiliser les fonctionnalités natives de Word</p>
         </div>
     </div>
 
@@ -118,5 +133,27 @@
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <script src="document-content.js"></script>
     <script src="tdm.js"></script>
+    
+    <script>
+        // Afficher les critères après génération du document
+        document.addEventListener('DOMContentLoaded', function() {
+            const originalGenerateBtn = document.getElementById('generateBtn');
+            if (originalGenerateBtn) {
+                const originalOnClick = originalGenerateBtn.onclick;
+                originalGenerateBtn.onclick = async function() {
+                    if (originalOnClick) {
+                        await originalOnClick();
+                    }
+                    // Afficher les critères de validation après génération
+                    setTimeout(() => {
+                        const criteriaDiv = document.getElementById('validationCriteria');
+                        if (criteriaDiv) {
+                            criteriaDiv.style.display = 'block';
+                        }
+                    }, 1000);
+                };
+            }
+        });
+    </script>
 </body>
 </html>

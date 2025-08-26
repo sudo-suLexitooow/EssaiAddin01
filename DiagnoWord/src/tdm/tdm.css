@@ -176,6 +176,12 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
 /* Variantes de boutons */
 .btn-primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -184,11 +190,6 @@ body {
 
 .btn-success {
   background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-  color: white;
-}
-
-.btn-warning {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
 }
 
@@ -203,6 +204,7 @@ body {
   color: #666;
   margin-top: 8px;
   padding-left: 5px;
+  font-style: italic;
 }
 
 /* Icônes */
@@ -312,6 +314,38 @@ body {
   color: #667eea;
 }
 
+/* Critères de validation */
+.validation-criteria {
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+  border-left: 4px solid #ffc107;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  animation: slideIn 0.5s ease;
+}
+
+.validation-criteria h3 {
+  color: #ff9800;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.validation-criteria p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.validation-criteria ul {
+  margin-left: 20px;
+  color: #555;
+  font-size: 13px;
+}
+
+.validation-criteria li {
+  margin: 6px 0;
+}
+
 /* Résultats de validation */
 .validation-results {
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
@@ -365,6 +399,7 @@ body {
   border-radius: 12px;
   margin-top: 20px;
   border: 1px solid #90caf9;
+  animation: slideIn 0.5s ease;
 }
 
 .document-details h3 {
@@ -467,4 +502,9 @@ body {
   100% {
       box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
   }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
