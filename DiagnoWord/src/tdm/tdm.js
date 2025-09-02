@@ -7,7 +7,7 @@ Office.onReady((info) => {
     if (info.host === Office.HostType.Word) {
         // Initialiser les boutons
         document.getElementById("generateBtn").onclick = generateDocument;
-        document.getElementById("tocBtn").onclick = showTableOfContentsHelp; // Changé pour l'aide
+        document.getElementById("tocBtn").onclick = showTableOfContentsHelp;
         document.getElementById("validateBtn").onclick = validateDocument;
         
         // Ajouter les dialogues au DOM
@@ -64,14 +64,15 @@ function createHelpDialog() {
                     <div class="steps-box">
                         <h4>📝 Étapes suggérées :</h4>
                         <ol>
+                            <li>Supprimez le texte "[Insérez la table des matières ici!]"</li>
                             <li>Positionnez votre curseur sous le titre "Table des matières"</li>
                             <li>Allez dans l'onglet <strong>Références</strong></li>
                             <li>Cliquez sur <strong>Table des matières</strong></li>
-                            <li>Choisissez un modèle qui affiche les numéros de page</li>
+                            <li>Choisissez un modèle automatique qui affiche les numéros de page</li>
                         </ol>
                     </div>
                     
-                    <p class="help-note">💡 <em>Astuce : Choisissez un modèle automatique pour avoir des liens cliquables !</em></p>
+                    <p class="help-note">💡 <em>Astuce : Les modèles "Table automatique 1" ou "Table automatique 2" créent des liens cliquables !</em></p>
                 </div>
                 <div class="help-dialog-footer">
                     <button id="helpOK" class="btn-dialog btn-help-ok">J'ai compris !</button>
@@ -368,7 +369,7 @@ async function generateDocument() {
     }
 }
 
-// Fonction pour générer le contenu du document (sans changement)
+// Fonction pour générer le contenu du document
 async function generateDocumentContent(body) {
     // Page de garde
     const coverTitle = body.insertParagraph(documentContent.coverPage.title, Word.InsertLocation.start);
@@ -390,10 +391,10 @@ async function generateDocumentContent(body) {
     // Saut de page après la page de garde
     body.insertBreak(Word.BreakType.page, Word.InsertLocation.end);
     
-    // // Table des matières (titre seulement)
-    // const tocTitle = body.insertParagraph("Table des matières", Word.InsertLocation.end);
-    // tocTitle.styleBuiltIn = Word.Style.heading1;
-    // tocTitle.spaceAfter = 30;
+    // Table des matières (titre)
+    const tocTitle = body.insertParagraph("Table des matières", Word.InsertLocation.end);
+    tocTitle.styleBuiltIn = Word.Style.heading1;
+    tocTitle.spaceAfter = 30;
     
     // Note pour l'utilisateur
     const tocPlaceholder = body.insertParagraph(
@@ -471,7 +472,7 @@ async function generateDocumentContent(body) {
     sourceNote.alignment = Word.Alignment.centered;
 }
 
-// Fonction de validation du document - MODIFIÉE
+// Fonction de validation du document
 async function validateDocument() {
     const loader = document.getElementById("validateLoader");
     const btn = document.getElementById("validateBtn");
@@ -482,6 +483,20 @@ async function validateDocument() {
         
         await Word.run(async (context) => {
             const body = context.document.body;
+            body.load("text");
+            await context.sync();
+            
+            // Vérifier d'abord si le document est vide
+            if (body.text.trim().length === 0) {
+                displayValidationResults([{
+                    check: "Document vide",
+                    passed: false,
+                    message: "Le document est vide. Veuillez d'abord générer le document."
+                }]);
+                showStatus("❌ Le document est vide. Veuillez d'abord générer le document.", "error");
+                return;
+            }
+            
             let validationResults = [];
             
             // Test 1: Vérifier la présence du titre "Table des matières"
@@ -492,71 +507,100 @@ async function validateDocument() {
             await context.sync();
             
             const hasTocTitle = tocTitleSearch.items.length > 0;
-            validationResults.push({
-                check: "Titre 'Table des matières' présent",
-                passed: hasTocTitle,
-                message: hasTocTitle ? 
-                    "Le titre 'Table des matières' est présent" : 
-                    "Le titre 'Table des matières' n'a pas été trouvé"
-            });
+            // validationResults.push({
+            //     check: "Titre 'Table des matières' présent",
+            //     passed: hasTocTitle,
+            //     message: hasTocTitle ? 
+            //         "Le titre 'Table des matières' est présent" : 
+            //         "Le titre 'Table des matières' n'a pas été trouvé - Générez d'abord le document"
+            // });
             
-            // Test 2: Vérifier que le placeholder a été remplacé par une vraie table
-            const placeholderSearch = context.document.body.search("[Insérez la table des matières ici", {
-                matchCase: false
+            // Test 2: Vérifier si le placeholder est toujours là
+            const placeholderSearch = context.document.body.search("\\[Insérez la table des matières ici!\\]", {
+                matchCase: false,
+                matchWildcards: false
             });
             placeholderSearch.load("items");
             await context.sync();
             
-            const placeholderRemoved = placeholderSearch.items.length === 0;
-            validationResults.push({
-                check: "Table des matières insérée",
-                passed: placeholderRemoved,
-                message: placeholderRemoved ? 
-                    "Une table des matières a été insérée" : 
-                    "Le placeholder est toujours présent - Utilisez l'onglet Références"
-            });
+            const placeholderPresent = placeholderSearch.items.length > 0;
             
-            // Test 3: Vérifier la présence de numéros de page (recherche de patterns typiques)
-            let hasPageNumbers = false;
-            if (placeholderRemoved && hasTocTitle) {
-                // Rechercher des patterns de numéros de page (ex: "...3", "... 3", points de suite)
-                const dotsSearch = context.document.body.search(".", {
-                    matchCase: false,
-                    matchWildcards: true
-                });
-                dotsSearch.load("items");
+            // Test 3: Détecter une vraie table des matières
+            let tableInserted = false;
+            let tableIndicators = 0;
+            
+            if (!placeholderPresent && hasTocTitle) {
+                // Liste des titres qui devraient apparaître dans une vraie table
+                const expectedTitles = [
+                    "Introduction à l'Intelligence Artificielle",
+                    "Histoire de l'IA",
+                    "Applications de l'IA",
+                    "IA dans la Santé",
+                    "Défis et Perspectives",
+                    "Conclusion"
+                ];
                 
-                // Rechercher des numéros après le titre TdM
-                const numberPatterns = ["1", "2", "3", "4", "5", "6"];
-                let foundNumbers = false;
-                
-                for (const num of numberPatterns) {
-                    const numSearch = context.document.body.search(num, {
+                for (const title of expectedTitles) {
+                    const titleSearch = context.document.body.search(title, {
                         matchCase: false
                     });
-                    numSearch.load("items");
+                    titleSearch.load("items");
                     await context.sync();
-                    if (numSearch.items.length > 0) {
-                        foundNumbers = true;
-                        break;
+                    
+                    // Si on trouve le titre plus d'une fois, c'est qu'il est dans la table ET le contenu
+                    if (titleSearch.items.length >= 2) {
+                        tableIndicators++;
                     }
                 }
                 
-                hasPageNumbers = foundNumbers;
+                // Si on trouve au moins 4 titres en double, une table a été insérée
+                tableInserted = tableIndicators >= 4;
+            }
+            
+            validationResults.push({
+                check: "Table des matières insérée",
+                passed: tableInserted,
+                message: tableInserted ? 
+                    `Table détectée : ${tableIndicators} titres trouvés dans la table` : 
+                    placeholderPresent ? 
+                        "Supprimez le placeholder et insérez une table via Références → Table des matières" :
+                        "Aucune table détectée. Utilisez Références → Table des matières → Table automatique"
+            });
+            
+            // Test 4: Vérifier la présence de numéros de page
+            let hasPageNumbers = false;
+            if (tableInserted) {
+                // Chercher des numéros de page typiques
+                let pageIndicators = 0;
+                
+                for (let i = 2; i <= 6; i++) {
+                    const pageSearch = context.document.body.search(i.toString(), {
+                        matchCase: false
+                    });
+                    pageSearch.load("items");
+                    await context.sync();
+                    
+                    if (pageSearch.items.length > 0) {
+                        pageIndicators++;
+                    }
+                }
+                
+                hasPageNumbers = pageIndicators >= 3;
             }
             
             validationResults.push({
                 check: "Numéros de page affichés",
                 passed: hasPageNumbers,
                 message: hasPageNumbers ? 
-                    "La table des matières affiche des numéros de page" : 
-                    "Les numéros de page ne sont pas visibles - Choisissez un modèle avec numéros"
+                    "La table affiche des numéros de page" : 
+                    tableInserted ?
+                        "Numéros de page non détectés - Utilisez un modèle avec numéros de page" :
+                        "Insérez d'abord une table des matières"
             });
             
-            // Test 4: Vérifier l'emplacement (sous le titre)
+            // Test 5: Vérifier l'emplacement (sous le titre)
             let correctPosition = false;
-            if (placeholderRemoved && hasTocTitle) {
-                // Si le placeholder est supprimé et qu'il y a du contenu, c'est probablement bien placé
+            if (tableInserted && hasTocTitle) {
                 correctPosition = true;
             }
             
@@ -565,40 +609,30 @@ async function validateDocument() {
                 passed: correctPosition,
                 message: correctPosition ? 
                     "La table est positionnée sous le titre 'Table des matières'" : 
-                    "La table n'est pas au bon emplacement"
+                    "Positionnez la table juste après le titre 'Table des matières'"
             });
             
-            // Test 5: Vérifier les liens actifs (difficile à tester programmatiquement)
-            // On vérifie si c'est une vraie table Word en cherchant des champs TOC
-            let hasActiveLinks = false;
-            if (placeholderRemoved) {
-                // Si une vraie table des matières Word est insérée, elle contient généralement
-                // des références aux titres du document
-                const headingRefs = ["Introduction", "Applications", "Défis"];
-                let foundRefs = 0;
-                
-                for (const ref of headingRefs) {
-                    const refSearch = context.document.body.search(ref, {
-                        matchCase: false
-                    });
-                    refSearch.load("items");
-                    await context.sync();
-                    // Si on trouve le terme plusieurs fois, c'est probablement dans la TdM + le contenu
-                    if (refSearch.items.length > 1) {
-                        foundRefs++;
-                    }
-                }
-                
-                hasActiveLinks = foundRefs >= 2; // Au moins 2 références trouvées
+            // Test 6: Vérifier si c'est un modèle automatique
+            let hasAutomaticModel = false;
+            if (tableInserted && hasPageNumbers) {
+                hasAutomaticModel = true;
             }
             
             validationResults.push({
-                check: "Liens cliquables (modèle automatique)",
-                passed: hasActiveLinks,
-                message: hasActiveLinks ? 
-                    "La table semble utiliser un modèle automatique avec liens" : 
-                    "Utilisez un modèle automatique pour avoir des liens cliquables"
+                check: "Modèle automatique (liens cliquables)",
+                passed: hasAutomaticModel,
+                message: hasAutomaticModel ? 
+                    "La table utilise un modèle automatique avec liens cliquables" : 
+                    "Utilisez 'Table automatique 1' ou 'Table automatique 2' pour avoir des liens"
             });
+
+            // validationResults.push({
+            //     check: "Placeholder supprimé",
+            //     passed: !placeholderPresent,
+            //     message: placeholderPresent
+            //         ? "Le placeholder est encore là : insérez une table des matières"
+            //         : "Le placeholder a été remplacé"
+            // });
             
             // Afficher les résultats
             displayValidationResults(validationResults);
@@ -610,20 +644,20 @@ async function validateDocument() {
             
             if (percentage === 100) {
                 showStatus(
-                    `✅ Excellent ! Tous les ${totalCount} critères sont validés. ` +
-                    "La table des matières est parfaitement configurée.",
+                    `✅ Parfait ! Tous les ${totalCount} critères sont validés. ` +
+                    "La table des matières est correctement configurée.",
                     "success"
                 );
-            } else if (percentage >= 60) {
+            } else if (percentage >= 50) {
                 showStatus(
-                    `⚠️ Presque parfait : ${passedCount}/${totalCount} critères validés (${percentage}%). ` +
-                    "Vérifiez les points manquants.",
+                    `⚠️ Progression : ${passedCount}/${totalCount} critères validés (${percentage}%). ` +
+                    "Vérifiez les points en rouge ci-dessous.",
                     "warning"
                 );
             } else {
                 showStatus(
                     `❌ Incomplet : ${passedCount}/${totalCount} critères validés (${percentage}%). ` +
-                    "Utilisez l'onglet Références pour insérer une table des matières automatique.",
+                    "Suivez les instructions : Références → Table des matières → Table automatique.",
                     "error"
                 );
             }
